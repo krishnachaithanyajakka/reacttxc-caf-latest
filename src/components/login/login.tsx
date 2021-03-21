@@ -42,6 +42,7 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
         this.mainserviceInstance.doLogin(this.state.fields).then(data=>{
             if(data && data['success'] === 'true'){
                 this.loginSuccess(data);
+                this.setState({fields: { txtEmail:'',txtPassword:''}})
             }else{
                 this.loginFailure(data);
             }
@@ -165,17 +166,17 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
             <div>
                 {this.state.serverError &&  <div style={{ color: "red" }}>{this.state.serverError}</div>}
                 <div className="from-feild-controls">
-                    <input name="txtEmail" type="email" size={150} placeholder="Your email" onChange={this.fromFieldsChange} />
+                    <input name="txtEmail" type="email" size={150} placeholder="Your email" onChange={this.fromFieldsChange} value={this.state.fields.txtEmail}/>
                     <br />
                     {(this.state.errors['txtEmail'] && this.state.errors['txtEmail'].length > 0) ?
                         <span style={{ color: "red" }}>{this.state.errors['txtEmail']}</span> : ''}
 
-                    <input name="txtPassword" type="password" size={150} placeholder="Your password" onChange={this.fromFieldsChange} />
+                    <input name="txtPassword" type="password" size={150} placeholder="Your password" onChange={this.fromFieldsChange} value={this.state.fields.txtPassword}/>
                     <br />
                     {(this.state.errors['txtPassword'] && this.state.errors['txtPassword'].length > 0) ?
                         <span style={{ color: "red" }}>{this.state.errors['txtPassword']}</span> : ''}
                     <br />
-                    <button onClick={this.doLogin} disabled={this.state.isFormValid}>Login In</button>
+                    <button onClick={this.doLogin} disabled={!this.state.isFormValid}>Login In</button>
                 </div>
             </div>
       );
