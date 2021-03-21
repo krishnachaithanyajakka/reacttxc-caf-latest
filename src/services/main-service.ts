@@ -89,7 +89,7 @@ export default class MainService {
             });
     }
 
-    makeLogin = (loginRequestData) => {
+    doLogin = (loginRequestData) => {
         return this.post(endPointUrl.dologin_url, loginRequestData).then(response => response['data']);
     }
 

@@ -81,5 +81,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
      refer doc here: https://www.npmjs.com/package/axios
 
- ## Application State Managment is also in built in this application/project
+ ## Application State Managment is also built in this application/project
  
