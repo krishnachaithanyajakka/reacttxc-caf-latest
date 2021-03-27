@@ -33,10 +33,6 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
         this.mainserviceInstance=new MainService();
     }
 
-    validate(){
-
-    }
-
     doLogin=()=>{
        if(this.state.isFormValid){
         this.mainserviceInstance.doLogin(this.state.fields).then(data=>{
@@ -65,7 +61,6 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
            return;
          } 
          if (failureData["errors"]["accountLocked"]) {
-           let msg = failureData["errors"]["accountLocked"];
            /**Below logic/work around is required to remove crossbrowser issue in safari, firefox & windows */
            const errorMessage = failureData["errors"]["accountLocked"].split(":")[0];
            serverError = errorMessage + new Date(failureData["errors"]["accountLocked"].substr(failureData["errors"]["accountLocked"].indexOf(":")));
@@ -111,7 +106,8 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
     validateFrom(name){
         let feilds:any=this.state.fields;
         let errors:any=this.state.errors
-        const regEx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
+        // eslint-disable-next-line
+        const regEx=/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
         if(name === 'txtEmail'){
             errors['txtEmail']='';
             if(!feilds['txtEmail']){
@@ -155,7 +151,7 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
         }
         const { name, value } = e.target;
         let fields = this.state.fields;
-        fields[name] = e.target.value;
+        fields[name] = value;
         this.setState({ fields });
         this.validateFrom(name)
     }
