@@ -4,18 +4,18 @@ import './App.scss';
 import MainService from './services/main-service';
 import LoginComponent from './components/login/login';
 import GameGroupDisplay from './components/game-group-display/game-group-display'
+import { connect } from 'react-redux';
+import { updateLoginStatus } from './actions/UserActions';
 
-export default class App extends React.Component {
+
+class App extends React.Component<any, any> {
   private mainserviceInstance:MainService;
   constructor(props){
     super(props);
     this.mainserviceInstance=new MainService();
   }
 
-  // componentDidMount(){
-  //   // this.getLobbyWithGameGroup();
-  //   this.getGameGroupGames();
-  // }
+ 
 
   getLobbyWithGameGroup(){
     this.mainserviceInstance.getLobbyListWithGameGroups().then(data=>{
@@ -29,10 +29,13 @@ export default class App extends React.Component {
     })
   }
 
-
+  updateLogin=()=>{
+    this.props.updatedLoginStatus(true)
+  }
   
   
   render() {
+    console.log("read state from mapStateToProps",this.props);
     return (
       <div className="App">
         <header className="App-header">
@@ -50,6 +53,7 @@ export default class App extends React.Component {
           <p>Website Name: {process.env.REACT_APP_websiteName}</p>
           <p>Website Code: {process.env.REACT_APP_websiteCode}</p>
           <p>Default Langauge: {process.env.REACT_APP_defaultLang}</p>
+          <button onClick={this.updateLogin}>change status</button>
           <a
             className="App-link"
             href="https://reactjs.org"
@@ -63,3 +67,17 @@ export default class App extends React.Component {
     );
   }
 }
+ const mapStateToProps = (state)=>{
+   return {
+     isUserLoggedIn: state.user.isUserLoggedIn
+   }
+ }
+
+ const mapDispatchToProps = dispatch =>{
+   return {
+     // eslint-disable-next-line no-restricted-globals
+     updatedLoginStatus:(status) => dispatch(updateLoginStatus(status))
+   }
+ }
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

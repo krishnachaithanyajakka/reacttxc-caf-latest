@@ -1,7 +1,13 @@
+
 import React from 'react';
+import { connect } from 'react-redux';
+import { updateLoginStatus } from '../../actions/UserActions';
 import MainService from './../../services/main-service';
 
-type MyProps={};
+// type MyProps={
+//     isLoggedIn:boolean
+//     // updatedLoginStatus:any
+// };
 type MyState={
     isFormValid:boolean
     serverError:string
@@ -14,7 +20,7 @@ type MyState={
         txtPassword:string
     }
 };
-export default class LoginComponent extends React.Component<MyProps,MyState>{
+class LoginComponent extends React.Component<any,MyState>{
     private mainserviceInstance:MainService;
     constructor(props){
         super(props);
@@ -50,7 +56,7 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
     loginSuccess(successData){
         localStorage.setItem('isLoggedIn','true');
         sessionStorage.setItem("user", 'true');
-        // this.commonService.broadCastLoginSuccess(true);
+        this.props.updatedLoginStatus(true)
     }
 
     loginFailure(failureData){
@@ -178,3 +184,18 @@ export default class LoginComponent extends React.Component<MyProps,MyState>{
       );
     }
 }
+
+
+const mapStateToProps = state =>{
+    return {
+        isLoggedIn:state.user.isUserLoggedIn
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return {
+      // eslint-disable-next-line no-restricted-globals
+      updatedLoginStatus:(status) => dispatch(updateLoginStatus(status))
+    }
+  }
+export default connect(mapStateToProps,mapDispatchToProps)(LoginComponent);
